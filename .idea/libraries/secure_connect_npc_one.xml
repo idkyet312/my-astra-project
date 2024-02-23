@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="secure-connect-npc-one">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/secure-connect-npc-one.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
