@@ -3,6 +3,53 @@ const express = require('express');
 const { Client } = require('cassandra-driver');
 const app = express();
 const port = process.env.PORT || 3000; // Fallback to 3000 if process.env.PORT is not set
+require('dotenv').config();
+const express = require('express');
+const { Client } = require('cassandra-driver');
+const { Configuration, OpenAIApi } = require("openai");
+
+// Initialize express app
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Middleware to parse JSON body in POST requests
+app.use(express.json());
+
+// Initialize OpenAI client
+const openai = new OpenAIApi(new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+}));
+
+// Initialize Cassandra client for Astra DB
+const client = new Client({
+    cloud: { secureConnectBundle: 'secure-connect-npc-one' },
+    credentials: { username: process.env.ASTRA_DB_CLIENT_ID, password: process.env.ASTRA_DB_CLIENT_SECRET },
+    keyspace: 'default_keyspace'
+});
+
+client.connect()
+    .then(() => console.log('Connected to Astra DB'))
+    .catch(e => console.error('Failed to connect to Astra DB:', e));
+
+// Handler for receiving input and fetching prediction
+app.post('/predict', async (req, res) => {
+    const userInput = req.body.input;
+    if (!userInput) {
+        return res.status(400).send('Input is required');
+    }
+
+    try {
+        // Send input to OpenAI and get the prediction
+        const openaiResponse = await openai.createCompletion({
+            model: "text-davinci-003", // or any other model
+            prompt: userInput,
+            max_tokens: 50,
+        });
+
+        const prediction = openaiResponse.data.choices[0].text.trim();
+
+        // Store input and prediction in Astra DB
+        const
 
 
 // Mock async function to simulate fetching data from a database
@@ -15,7 +62,8 @@ const fetchDataFromDatabase = async () => {
 // Handler for the /data route
 app.get('/data', async (req, res) => {
   try {
-    const data = await fetchDataFromDatabase();
+    //const data = await fetchDataFromDatabase();
+    await data = client.connect();
     res.status(200).json(data);
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -30,5 +78,5 @@ app.get('/', (req, res) => {
 
 
 
-app.listen(port, () => console.log(`Server running on http://localhost:${port}/data`));
+app.listen(port, () => console.log(`Server running on http://localhost:${port}/data`));//
 
