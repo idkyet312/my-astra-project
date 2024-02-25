@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const { Client } = require('cassandra-driver');
 const app = express();
-const port = process.env.PORT || 3000; // Fallback to 3000 if process.env.PORT is not set
+const port = process.env.PORT || 8080; // Fallback to 3000 if process.env.PORT is not set
 require('dotenv').config();
 const express = require('express');
 const { Client } = require('cassandra-driver');
