@@ -10,7 +10,7 @@ const { Configuration, OpenAIApi } = require("openai");
 
 // Initialize express app
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 // Middleware to parse JSON body in POST requests
 app.use(express.json());
