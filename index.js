@@ -63,7 +63,7 @@ const fetchDataFromDatabase = async () => {
 app.get('/data', async (req, res) => {
   try {
     //const data = await fetchDataFromDatabase();
-    await data = client.connect();
+    await data = fetchDataFromDatabase()
     res.status(200).json(data);
   } catch (error) {
     console.error('Error fetching data:', error);
